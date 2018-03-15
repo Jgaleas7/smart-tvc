@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- <link rel="stylesheet" href="https://cdn.webrtc-experiment.com/style.css"> -->
+    <!--<link rel="stylesheet" href="materialize/css/materialize.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Smart Tvc IT Broadcast</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Transmición en tiempo real">
+    <link rel="icon" href="MultiRTC/images/icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Webrtc TVC">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Webrtc TVC">
+    <meta name="msapplication-TileColor" content="#2196F3">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link href="http://vjs.zencdn.net/6.6.3/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/6.6.3/video.js"></script>
+
+</head>
+
+<body class="container-fluid">
+
+<div class="form-row">
+    <div class="form-group col-s4">
+        <select id="room-id" class="form-control">
+            <option value="Canal-1">Canal 1</option>
+            <option value="Canal-2">Canal 2</option>
+            <option value="Canal-3">Canal 3</option>
+            <option value="Canal-4">Canal 4</option>
+            <option value="Canal-5">Canal 5</option>
+        </select>
+    </div>
+    <div class="form-group col">
+        <select id="camaras" class="form-control" hidden>
+        </select>
+    </div>
+    <div class="form-group col">
+        <select id="bitrate" class="form-control" hidden>
+            <option value="700">700</option>
+            <option value="800">800</option>
+            <option value="1000">1000</option>
+            <option value="1200">1200</option>
+            <option value="1300">1300</option>
+            <option value="8000">8000</option>
+        </select>
+    </div>
+    <div class="form-group col">
+     <button id="join-room" class=" btn  btn-large btn-success" >Conectar</button>
+   
+    </div>
+    <div class="form-group col">
+     <button id="final" class=" btn  btn-large btn-danger" onclick="location.reload()">Final</button>
+    </div>
+    <button id="open-room" class="btn btn-large btn-primary" hidden>Conectarse</button>
+
+</div>
+                <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+
+            <div id="videos-container"  class="media"></div>
+
+
+        <script src="/dist/RTCMultiConnection.min.js"></script>
+
+      <!-- <script src="https://cdn.webrtc-experiment.com/firebase.js"></script> -->
+        <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+        <script src="js/coneccion.js"></script>
+        <script src="/dev/FirebaseConnection.js"></script>
+        <script>
+            var videoselect=document.querySelector('select#camaras');
+            navigator.mediaDevices.enumerateDevices().then(function(devices){
+               // console.log(devices);
+                for(var i=0; i !== devices.length; ++i){
+                    var device =devices[i];
+                    var option=document.createElement('option');
+                    option.value=device.deviceId;
+                    if(device.kind==='videoinput'){
+                        option.text=device.label || 'camara'+(videoselect.length+1);
+                        videoselect.appendChild(option);
+                    }
+                }
+            }).catch(function(error){
+                console.log(err.name+'  '+error.message);
+            });
+            var database=firebase.database();
+            document.getElementById('open-room').onclick = function() {
+                var roomid=document.getElementById('room-id').value;
+                secondOption= document.getElementById("camaras").value;
+                bitrate= document.getElementById("bitrate").value;
+                console.log(secondOption);
+                connection.mediaConstraints.video={
+                    //mandatory: {  minAspectRatio: 1.3333},
+                    optional: [{
+                        sourceId: secondOption
+                    }]
+                };
+                connection.bandwidth = {
+                    audio: 280,  // 50 kbps
+                    video: bitrate, // 256 kbps
+                };
+                    database.ref("conecciones"+roomid).set({
+                        canal:roomid,
+                        camara:secondOption,
+                        bitrate:bitrate,
+                        estatus:"Activo"
+                    });
+
+                    disableInputButtons();
+                connection.open(roomid, function() {
+                   // showRoomURL(connection.sessionid);
+                    console.log(connection.sessionid);
+                });
+
+            };
+
+            document.getElementById('join-room').onclick = function() {
+                disableInputButtons();
+                connection.join(document.getElementById('room-id').value);
+            };
+
+            // ..................RTCMultiConnection Code.............
+            var connection = new RTCMultiConnection();
+            connection.socketMessageEvent = 'firebase-demo';
+            connection.setCustomSocketHandler(FirebaseConnection);
+            connection.firebase = 'what-tv';
+
+                connection.session = {
+                audio: true,
+                video: {
+                    mandatory: {
+                        minWidth: 720,
+                        maxWidth: 1280,
+                        minHeight: 480,
+                        maxHeight: 720,
+                        minFrameRate: 30,
+                        maxFrameRate: 60
+                    }
+                },
+                oneway:true
+            };
+
+           connection.videosContainer = document.getElementById('videos-container');
+            connection.onstream = function(event) {
+                console.log(event);
+                connection.videosContainer.appendChild(event.mediaElement);
+                event.mediaElement.play();
+                setTimeout(function() {
+                    event.mediaElement.play();
+                }, 5000);
+            };
+
+            function disableInputButtons() {
+                connection.channel = document.getElementById('room-id').value;
+
+                document.getElementById('open-room').disabled = true;
+                document.getElementById('join-room').disabled = true;
+                document.getElementById('room-id').disabled = true;
+            }
+
+            // ......................................................
+            // ......................Handling Room-ID................
+            // ......................................................
+
+            function showRoomURL(roomid) {
+                var roomHashURL = '#' + roomid;
+                var roomQueryStringURL = '?roomid=' + roomid;
+
+                var html = '<h2>Unique URL for your room:</h2><br>';
+
+                html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
+                html += '<br>';
+                html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
+
+                var roomURLsDiv = document.getElementById('room-urls');
+                roomURLsDiv.innerHTML = html;
+
+                roomURLsDiv.style.display = 'none';
+            }
+
+            (function() {
+                var params = {},
+                    r = /([^&=]+)=?([^&]*)/g;
+
+                function d(s) {
+                    return decodeURIComponent(s.replace(/\+/g, ' '));
+                }
+                var match, search = window.location.search;
+                while (match = r.exec(search.substring(1)))
+                    params[d(match[1])] = d(match[2]);
+                window.params = params;
+            })();
+
+            var roomid = '';
+            if (localStorage.getItem(connection.socketMessageEvent)) {
+                roomid = localStorage.getItem(connection.socketMessageEvent);
+            } else {
+                roomid = connection.token();
+            }
+            document.getElementById('room-id').value = roomid;
+            document.getElementById('room-id').onkeyup = function() {
+                localStorage.setItem(connection.socketMessageEvent, this.value);
+            };
+
+            var hashString = location.hash.replace('#', '');
+            if(hashString.length && hashString.indexOf('comment-') == 0) {
+              hashString = '';
+            }
+
+            var roomid = params.roomid;
+            if(!roomid && hashString.length) {
+                roomid = hashString;
+            }
+
+            if(roomid && roomid.length) {
+                document.getElementById('room-id').value = roomid;
+                localStorage.setItem(connection.socketMessageEvent, roomid);
+
+                disableInputButtons();
+
+                // auto-join-room
+                connection.join(roomid);
+            }
+        </script>
+
+
+</body>
+
+</html>

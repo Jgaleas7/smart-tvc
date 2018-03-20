@@ -84,14 +84,13 @@
             });
             var database=firebase.database();
 
-
             document.getElementById('open-room').onclick = function() {
                 var roomid=document.getElementById('room-id').value;
                 secondOption= document.getElementById("camaras").value;
                 bitrate= document.getElementById("bitrate").value;
                 console.log(secondOption);
                 connection.mediaConstraints.video={
-                    mandatory: {  minAspectRatio: 1.3333},
+                    //mandatory: {  minAspectRatio: 1.3333},
                     optional: [{
                         sourceId: secondOption
                     }]

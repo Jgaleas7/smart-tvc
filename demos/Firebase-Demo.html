@@ -22,7 +22,6 @@
     <link href="video.css" rel="stylesheet">
     <script src="video.js"></script>
 </head>
-
 <body class="container-fluid">
 
             <div class="form-row">
@@ -119,7 +118,6 @@
             connection.socketMessageEvent = 'firebase-demo';
             connection.setCustomSocketHandler(FirebaseConnection);
             connection.firebase = 'what-tv';
-
                 connection.session = {
                 audio: true,
                 video: {
@@ -134,26 +132,20 @@
                 },
                 oneway:true
             };
-
            connection.videosContainer = document.getElementById('videos-container');
             connection.onstream = function(event) {
-                console.log(event);
                 connection.videosContainer.appendChild(event.mediaElement);
                 event.mediaElement.play();
                 setTimeout(function() {
                     event.mediaElement.play();
                 }, 5000);
             };
-
             function disableInputButtons() {
                 connection.channel = document.getElementById('room-id').value;
                 document.getElementById('open-room').disabled = true;
                 document.getElementById('room-id').disabled = true;
             }
-
         </script>
-
-
 </body>
 
 </html>

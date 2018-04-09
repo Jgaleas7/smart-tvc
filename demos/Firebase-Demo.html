@@ -97,6 +97,10 @@
                 connection.bandwidth = {
                     video: bitrate, // 256 kbps
                 };
+                 connection.sdpConstraints.mandatory = {
+                OfferToReceiveAudio: true,
+                OfferToReceiveVideo: true
+            };
                     database.ref("conecciones/"+roomid).set({
                         canal:roomid,
                         camara:secondOption,

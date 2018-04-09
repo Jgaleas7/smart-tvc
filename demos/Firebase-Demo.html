@@ -7,12 +7,12 @@
 
     <title>Smart Tvc IT Broadcast</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Transmición en tiempo real">
+    <meta name="description" content="Transmisión en tiempo real smart Tvc">
     <link rel="icon" href="images/icons/icon-512x512.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2196F3">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Webrtc TVC">
+    <meta name="application-name" content="Smart TVC">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Webrtc TVC">
@@ -97,7 +97,7 @@
                 connection.bandwidth = {
                     video: bitrate, // 256 kbps
                 };
-                    database.ref("conecciones"+roomid).set({
+                    database.ref("conecciones/"roomid).set({
                         canal:roomid,
                         camara:secondOption,
                         bitrate:bitrate,

@@ -97,7 +97,7 @@
                 connection.bandwidth = {
                     video: bitrate, // 256 kbps
                 };
-                    database.ref("conecciones/"roomid).set({
+                    database.ref("conecciones/"+roomid).set({
                         canal:roomid,
                         camara:secondOption,
                         bitrate:bitrate,

@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Smart Tvc</title>
     <meta name="description" content="Smart Tvc" />
@@ -30,11 +31,11 @@
             <div class="form-row">
                 <div class="form-group col-s4">
                     <select id="room-id" class="form-control">
-                        <option value="Canal-1">Canal 1</option>
-                        <option value="Canal-2">Canal 2</option>
-                        <option value="Canal-3">Canal 3</option>
-                        <option value="Canal-4">Canal 4</option>
-                        <option value="Canal-5">Canal 5</option>
+                        <option id="Canal-1" value="Canal-1">Canal 1</option>
+                        <option id="Canal-2" value="Canal-2">Canal 2</option>
+                        <option id="Canal-3" value="Canal-3">Canal 3</option>
+                        <option id="Canal-4" value="Canal-4">Canal 4</option>
+                        <option id="Canal-5" value="Canal-5">Canal 5</option>
                     </select>
                 </div>
                 <div hidden class="form-group col-4">
@@ -46,14 +47,13 @@
                 <button id="join-room"  class="btn btn-info">Unirse</button>
                 <button id="final" class=" btn  btn-large btn-danger" onclick="location.reload()">Final</button>
                 </div>
-                  <div class="form-group ">
-                 
-                </div>
+                <h6><span class="badge badge-info" id="estado"></span></h6>
+
                 <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
             </div>
 
             <div id="videos-container" class="media"></div>
-
+        <script src="js/adapter.js"></script>
         <script src="/dist/RTCMultiConnection.min.js"></script>
         <script src="/dev/FirebaseConnection.js"></script>
         <!--<script src="https://cdn.webrtc-experiment.com/firebase.js"></script> -->
@@ -62,6 +62,7 @@
         <script src="js/FirebaseConnection.js"></script>
         <script src="video.js"></script>
         <script>
+        	  var database=firebase.database();
                    var videoselect=document.querySelector('select#camaras');
             navigator.mediaDevices.enumerateDevices().then(function(devices){
                // console.log(devices);
@@ -161,12 +162,28 @@
             } else {
                 roomid = connection.token();
             }
-            document.getElementById('room-id').value = roomid;
+            //document.getElementById('room-id').value = roomid;
             document.getElementById('room-id').onkeyup = function() {
                 localStorage.setItem(connection.socketMessageEvent, this.value);
             };
             var hashString = location.hash.replace('#', '');
-            if(hashString.length && hashString.indexOf('comment-') == 0) {
+            document.getElementById(hashString).selected = "true";
+		           var starCountRef = database.ref('conecciones/'+hashString);
+					starCountRef.on('value', function(snapshot) {
+					  if(snapshot.exists()){
+					  if(snapshot.child("estatus").val()=="Activo"){
+					  		 document.getElementById("estado").innerHTML =snapshot.child("estatus").val();
+					  		 document.getElementById("estado").className = "badge-info";
+							 setTimeout(function(){ document.getElementById("join-room").click(); }, 800);
+
+					  }else{
+					  	document.getElementById("estado").className = "badge-danger";
+					  	document.getElementById("estado").innerHTML =snapshot.child("estatus").val();
+					  	//location.reload()
+					  }
+					  }
+					});
+		            if(hashString.length && hashString.indexOf('comment-') == 0) {
               hashString = '';
             }
             var roomid = params.roomid;
@@ -174,11 +191,11 @@
                 roomid = hashString;
             }
             if(roomid && roomid.length) {
-                document.getElementById('room-id').value = roomid;
+                //document.getElementById('room-id').value = roomid;
                 localStorage.setItem(connection.socketMessageEvent, roomid);
-                disableInputButtons();
+                //disableInputButtons();
                 // auto-join-room
-                connection.join(roomid);
+                //connection.join(roomid);
             }
         </script>
 </body>

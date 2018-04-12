@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Admin Smart Tvc</title>
+    <link rel="icon" href="images/icons/icon-512x512.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+</head>
+ <body >      
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <table class="table table table-dark  table-striped table-bordered" id="ex-table">
+      <tr id="tr">
+        <th>Brand</th>
+       <th>Description</th>
+       <th>Item Code</th>
+     </table> 
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/coneccion.js"></script>
+    <script>      
+      var database = firebase.database();
+        database.ref("conecciones/").on('value', function(snapshot){
+            if(snapshot.exists()){
+                var content = '';
+                snapshot.forEach(function(data){
+                    var val = data.val();
+                    content +='<tr>';
+                    content += '<td>' + val.canal + '</td>';
+                    content += '<td>' + val.estatus + '</td>';
+                    content += '<td>' + val.fecha + '</td>';
+                    content += '</tr>';
+                });
+                 $("#ex-table  tr").remove();
+                $('#ex-table').append(content);
+            }
+        });
+      
+     </script>
+    </body>
+</html>

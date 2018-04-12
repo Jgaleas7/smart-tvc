@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Smart Tvc</title>
     <meta name="description" content="Smart Tvc" />
@@ -78,6 +79,9 @@
         
             document.getElementById('open-room').onclick = function() {
              var roomid =document.getElementById('room-id').value;
+             if(roomid===''){
+                return;
+             }
                  var secondOption=document.getElementById('camaras').value;
                   var fecha = new Date();
                 connection.mediaConstraints.video={
@@ -179,7 +183,7 @@
             } else {
                 roomid = connection.token();
             }
-            document.getElementById('room-id').value = roomid;
+            //document.getElementById('room-id').value = roomid;
             document.getElementById('room-id').onkeyup = function() {
                 localStorage.setItem(connection.socketMessageEvent, this.value);
             };
@@ -192,7 +196,7 @@
                 roomid = hashString;
             }
             if(roomid && roomid.length) {
-                document.getElementById('room-id').value = roomid;
+              //  document.getElementById('room-id').value = roomid;
                 localStorage.setItem(connection.socketMessageEvent, roomid);
                 disableInputButtons();
                 // auto-join-room

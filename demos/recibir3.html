@@ -119,6 +119,11 @@
                 event.mediaElement.play();
                 setTimeout(function() {
                     event.mediaElement.play();
+			   if(event.mediaElement.requestFullscreen){
+                        event.mediaElement.requestFullscreen()  
+                    }else{
+                      event.mediaElement.webkitRequestFullscreen();
+                    }
                 }, 5000);
             };
             //connection.onmessage = appendDIV;

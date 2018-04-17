@@ -134,7 +134,7 @@
                 event.mediaElement.classList.add("video-js");
                     event.mediaElement.classList.add("myVideo");
                    // document.getElementById("fullscreen").click();
-                }, 2000);
+                }, 1000);
             };
             //connection.onmessage = appendDIV;
             connection.filesContainer = document.getElementById('file-container');
@@ -205,6 +205,14 @@
 					  }
 					  }
 					});
+		  starCountRef.on('child_changed', function(snapshot) {
+                        console.log(snapshot);
+                      if(snapshot.exists()){
+                              if(snapshot.val()=="Inactivo"){
+                                   location.reload()
+                              }
+                      }
+                    });
 		            if(hashString.length && hashString.indexOf('comment-') == 0) {
               hashString = '';
             }

@@ -15,7 +15,7 @@ function FirebaseConnection(connection, connectCallback) {
             onMessagesCallback(data.data);
         }
 
-        snap.ref().remove(); // for socket.io live behavior
+        //snap.ref().remove(); // for socket.io live behavior
     });
 
     connection.socket.onDisconnect().remove();

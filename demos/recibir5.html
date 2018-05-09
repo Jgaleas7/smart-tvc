@@ -205,7 +205,8 @@
                         console.log(snapshot);
                       if(snapshot.exists()){
                               if(snapshot.val()=="Inactivo"){
-					window.location.href=window.location.href
+				      console.log("finalizo");
+					location.reload();
                               }
                       }
                     });

@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <title>Smart Tvc</title>
     <meta name="description" content="Smart Tvc" />
     <meta name="keywords" content="WebRTC,Televicentro, SMART-TVC" />
@@ -24,10 +24,55 @@
             font-size: 16px;
             outline: none;
         }
+	    body {
+   		 margin: 0;
+  		  padding: 0;
+		}
+	    .fullscreen-bg {
+		    position: fixed;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    left: 0;
+		    overflow: hidden;
+		    z-index: -100;
+	      }
+	    .fullscreen-bg__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (min-aspect-ratio: 4/3) {
+    .fullscreen-bg__video {
+        height: 300%;
+        top: -100%;
+    }
+}
+
+@media (max-aspect-ratio: 4/3) {
+    .fullscreen-bg__video {
+        width: 300%;
+        left: -100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .fullscreen-bg {
+        background: url('images/icons/icon-512x512.png') center center / cover no-repeat;
+    }
+
+    .fullscreen-bg__video {
+        display: none;
+    }
+}
+
         .myVideo {
-      position: fixed;
-      right: 0;
-    bottom: 0;
+          position: fixed;
+            right: 0;
+           bottom: 0;
             object-fit: cover;
             min-width: 100%;
              height: 100%;
@@ -60,7 +105,7 @@
                 <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
             </div>
 
-            <div id="videos-container" class="media"></div>
+            <div id="videos-container" class="fullscreen-bg"></div>
         <script src="js/adapter.js"></script>
         <script src="js/multi.js"></script>
         <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
@@ -127,8 +172,8 @@
                 ElVideo=event.mediaElement;
                 setTimeout(function() {
                     event.mediaElement.play();
-                event.mediaElement.classList.add("video-js");
-                    event.mediaElement.classList.add("myVideo");
+                    event.mediaElement.classList.add("video-js");
+                    event.mediaElement.classList.add("fullscreen-bg__video");
                 }, 1000);
             };
             //connection.onmessage = appendDIV;
@@ -218,9 +263,7 @@
             if(roomid && roomid.length) {
                 //document.getElementById('room-id').value = roomid;
                 localStorage.setItem(connection.socketMessageEvent, roomid);
-                //disableInputButtons();
-                // auto-join-room
-                //connection.join(roomid);
+       
             }
         </script>
 </body>

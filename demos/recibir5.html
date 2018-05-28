@@ -13,7 +13,7 @@
     <meta name="theme-color" content="#2196F3">
    <link href="video.css" rel="stylesheet">
     <style>
-        button,
+   button,
         input,
         select {
             font-weight: normal;
@@ -36,46 +36,45 @@
 		    left: 0;
 		    overflow: hidden;
 		    z-index: -100;
-	      }
+            flex: auto;
+        }
 	    .fullscreen-bg__video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-@media (min-aspect-ratio: 4/3) {
-    .fullscreen-bg__video {
-        height: 300%;
-        top: -100%;
-    }
-}
-
-@media (max-aspect-ratio: 4/3) {
-    .fullscreen-bg__video {
-        width: 300%;
-        left: -100%;
-    }
-}
-
-@media (max-width: 767px) {
-    .fullscreen-bg {
-        background: url('images/icons/icon-512x512.png') center center / cover no-repeat;
-    }
-
-    .fullscreen-bg__video {
-        display: none;
-    }
-}
-
-        .myVideo {
-          position: fixed;
+            position: fixed;
+            overflow: hidden;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            bottom: 0;
             right: 0;
-           bottom: 0;
-            object-fit: cover;
-            min-width: 100%;
-             height: 100%;
+            width: 100%;
+            height: 100%;
+            padding-top: 0 !important;
+
+}
+        .fullscreen-bg__video:-moz-full-screen {
+            position: absolute; }
+        .fullscreen-bg__video:-webkit-full-screen {
+            width: 100% !important;
+            height: 100% !important; }
+        @media (min-aspect-ratio: 16/9) {
+            .fullscreen-bg__video { padding-top: 56.25%; }
+            }
+        @media (max-aspect-ratio: 4/3) {
+            .fullscreen-bg__video { padding-top: 75%; }
+            }
+        .myVideo {
+            position: fixed;
+            overflow: hidden;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            /* object-fit: cover;*/
+             min-width: 100%;
+            height: 100% !important;
+            width: 100% !important;
+
         }
     </style>
 </head>

@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Smart Tvc</title>
     <meta name="description" content="Smart Tvc" />
     <meta name="keywords" content="WebRTC,Televicentro, SMART-TVC" />
@@ -13,7 +12,7 @@
     <meta name="theme-color" content="#2196F3">
    <link href="video.css" rel="stylesheet">
     <style>
-        button,
+      button,
         input,
         select {
             font-weight: normal;
@@ -24,13 +23,57 @@
             font-size: 16px;
             outline: none;
         }
+	    body {
+   		 margin: 0;
+  		  padding: 0;
+		}
+	    .fullscreen-bg {
+		    position: fixed;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    left: 0;
+		    overflow: hidden;
+		    z-index: -100;
+            flex: auto;
+        }
+	    .fullscreen-bg__video {
+            position: fixed;
+            overflow: hidden;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            padding-top: 0 !important;
+
+}
+        .fullscreen-bg__video:-moz-full-screen {
+            position: absolute; }
+        .fullscreen-bg__video:-webkit-full-screen {
+            width: 100% !important;
+            height: 100% !important; }
+        @media (min-aspect-ratio: 16/9) {
+            .fullscreen-bg__video { padding-top: 56.25%; }
+            }
+        @media (max-aspect-ratio: 4/3) {
+            .fullscreen-bg__video { padding-top: 75%; }
+            }
         .myVideo {
-      position: fixed;
-      right: 0;
-    bottom: 0;
-            object-fit: cover;
-            min-width: 100%;
-             height: 100%;
+            position: fixed;
+            overflow: hidden;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            /* object-fit: cover;*/
+             min-width: 100%;
+            height: 100% !important;
+            width: 100% !important;
+
         }
     </style>
 </head>
@@ -132,7 +175,7 @@
                 setTimeout(function() {
                     event.mediaElement.play();
                 event.mediaElement.classList.add("video-js");
-                    event.mediaElement.classList.add("myVideo");
+                    event.mediaElement.classList.add("fullscreen-bg__video");
                    // document.getElementById("fullscreen").click();
                 }, 1000);
             };

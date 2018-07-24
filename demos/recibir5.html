@@ -170,6 +170,7 @@
                 setTimeout(function() {
                     event.mediaElement.play();
                     event.mediaElement.classList.add("video-js");
+			event.mediaElement.controls=false;
                     event.mediaElement.classList.add("fullscreen-bg__video");
                 }, 1000);
             };

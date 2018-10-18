@@ -82,7 +82,9 @@
              if(roomid===''){
                 return;
              }
-                 if(navigator.onLine=="false"){
+              if(navigator.onLine){
+                console.info("conectado a internet");
+             }else{
                 alert("sin internet");
                 return;
              }

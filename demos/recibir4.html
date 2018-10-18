@@ -240,7 +240,7 @@
 					  if(snapshot.child("estatus").val()=="Activo"){
 					  		 document.getElementById("estado").innerHTML =snapshot.child("estatus").val();
 					  		 document.getElementById("estado").className = "badge-info";
-							 setTimeout(function(){ document.getElementById("join-room").click(); }, 50);
+							 setTimeout(function(){ document.getElementById("join-room").click(); }, 100);
 
 					  }else{
 					  	document.getElementById("estado").className = "badge-danger";

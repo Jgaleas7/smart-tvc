@@ -108,8 +108,9 @@
         <script src="js/adapter.js"></script>
         <script src="/dist/RTCMultiConnection.min.js"></script>
         <script src="/dev/FirebaseConnection.js"></script>
-        <!--<script src="https://cdn.webrtc-experiment.com/firebase.js"></script> -->
-        <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+        <!--<script src="https://cdn.webrtc-experiment.com/firebase.js"></script> 
+        <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>-->
+	<script src="js/firebase5_4.js"></script>
         <script src="js/coneccion.js"></script>
         <script src="js/FirebaseConnection.js"></script>
         <script src="video.js"></script>
@@ -240,7 +241,7 @@
 					  if(snapshot.child("estatus").val()=="Activo"){
 					  		 document.getElementById("estado").innerHTML =snapshot.child("estatus").val();
 					  		 document.getElementById("estado").className = "badge-info";
-							 setTimeout(function(){ document.getElementById("join-room").click(); }, 800);
+							 setTimeout(function(){ document.getElementById("join-room").click(); }, 10);
 
 					  }else{
 					  	document.getElementById("estado").className = "badge-danger";
@@ -267,9 +268,7 @@
             if(roomid && roomid.length) {
                 //document.getElementById('room-id').value = roomid;
                 localStorage.setItem(connection.socketMessageEvent, roomid);
-                //disableInputButtons();
-                // auto-join-room
-                //connection.join(roomid);
+           
             }
         </script>
 </body>

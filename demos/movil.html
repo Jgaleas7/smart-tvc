@@ -82,6 +82,10 @@
              if(roomid===''){
                 return;
              }
+                 if(navigator.onLine){
+                alert("sin internet");
+                return;
+             }
                  var secondOption=document.getElementById('camaras').value;
                   var fecha = new Date();
                 connection.mediaConstraints.video={

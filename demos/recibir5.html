@@ -166,7 +166,7 @@
             connection.videosContainer = document.getElementById('videos-container');
             connection.onstream = function(event) {
                 connection.videosContainer.appendChild(event.mediaElement);
-                event.mediaElement.play();
+                //event.mediaElement.play();
                 ElVideo=event.mediaElement;
                 setTimeout(function() {
                     event.mediaElement.play();

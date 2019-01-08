@@ -129,14 +129,14 @@
     {
       "code": "ENOTSUP",
       "required": {
-        "node": "7.0.0"
+        "node": "10.15.0"
       },
       "pkgid": "rtcmulticonnection-v3@3.4.4"
     },
     {
       "code": "ENOTSUP",
       "required": {
-        "node": "7.0.0"
+        "node": "10.15.0"
       },
       "pkgid": "rtcmulticonnection-v3@3.4.4"
     }

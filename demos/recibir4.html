@@ -137,6 +137,14 @@
                  console.info(secondOption);
                 connection.mediaConstraints.video={
                     optional: [{
+			     mandatory: {
+                        minWidth: 720,
+                        maxWidth: 720,
+                        minHeight: 480,
+                        maxHeight: 480,
+                        minFrameRate:29,
+                        maxFrameRate:60
+                    },
                         sourceId: secondOption
                     }]
                 };

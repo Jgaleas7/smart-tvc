@@ -90,6 +90,14 @@
                  var secondOption=document.getElementById('camaras').value;
                   var fecha = new Date();
                 connection.mediaConstraints.video={
+                     mandatory: {
+                        minWidth: 720,
+                        maxWidth: 720,
+                        minHeight: 480,
+                        maxHeight: 480,
+                        minFrameRate:29,
+                        maxFrameRate:60
+                    },
                     optional: [{
                         sourceId: secondOption
                     }]

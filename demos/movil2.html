@@ -91,12 +91,14 @@
                   var fecha = new Date();
                 connection.mediaConstraints.video={
                      mandatory: {
-                        minWidth: 720,
-                        maxWidth: 720,
-                        minHeight: 480,
-                        maxHeight: 480,
+                        minWidth: 1920,
+                        maxWidth: 1920,
+                        minHeight: 1080,
+                        maxHeight: 1080,
                         minFrameRate:29,
-                        maxFrameRate:60
+                        maxFrameRate:60,
+                        minAspectRatio: 1.777,
+                        maxAspectRatio:1.777
                     },
                     optional: [{
                         sourceId: secondOption

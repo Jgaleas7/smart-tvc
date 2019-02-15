@@ -50,7 +50,7 @@
                 <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
             </div>
 
-            <div id="videos-container" class="media"></div>
+            <div id="videos-container" class="embed-responsive embed-responsive-16by9"></div>
         <script src="js/adapter.js"></script>
         <script src="js/multi.js"></script>
         <!-- <script src="/dev/FirebaseConnection.js"></script>-->
@@ -147,6 +147,7 @@
             connection.videosContainer = document.getElementById('videos-container');
             connection.onstream = function(event) {
                 connection.videosContainer.appendChild(event.mediaElement);
+                 event.mediaElement.classList.add("video-js");
                 event.mediaElement.play();
                 setTimeout(function() {
                     event.mediaElement.play();

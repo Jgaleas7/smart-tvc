@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <title>Smart Tvc</title>
     <meta name="description" content="Smart Tvc" />
     <meta name="keywords" content="WebRTC,Televicentro, SMART-TVC" />
@@ -13,7 +12,7 @@
     <meta name="theme-color" content="#2196F3">
    <link href="video.css" rel="stylesheet">
     <style>
-   button,
+      button,
         input,
         select {
             font-weight: normal;
@@ -36,7 +35,7 @@
 		    left: 0;
 		    overflow: hidden;
 		    z-index: -100;
-           	    flex: auto;
+            flex: auto;
         }
 	    .fullscreen-bg__video {
             position: fixed;
@@ -76,6 +75,7 @@
         }
     </style>
 </head>
+
 <body class="container-fluid">
             <div class="form-row" hidden>
                 <div class="form-group col-s4">
@@ -102,10 +102,11 @@
                 <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
             </div>
 
-            <div id="videos-container" class="fullscreen-bg"></div>
+            <div id="videos-container" class="media"></div>
         <script src="js/adapter.js"></script>
-        <script src="js/multi.js"></script>
-	  <script src="/dev/FirebaseConnection.js"></script>
+        <script src="/dist/rtcmulticonection1.js"></script>
+        <script src="/dev/FirebaseConnection.js"></script>
+        <!--<script src="https://cdn.webrtc-experiment.com/firebase.js"></script> -->
         <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
         <script src="js/coneccion.js"></script>
         <script src="js/FirebaseConnection.js"></script>
@@ -134,6 +135,15 @@
                  console.info(secondOption);
                 connection.mediaConstraints.video={
                     optional: [{
+			     mandatory: {
+                        minWidth: 1280,
+                        maxWidth: 1280,
+                        minHeight: 720,
+                        maxHeight: 720,
+                      //  minFrameRate:30,
+                       // maxFrameRate:30,
+                        minAspectRatio: 1.77
+                    },
                         sourceId: secondOption
                     }]
                 };
@@ -144,35 +154,41 @@
             };
             document.getElementById('join-room').onclick = function() {
                 disableInputButtons();
+		     connection.sdpConstraints.mandatory = {
+      			  OfferToReceiveAudio: true,
+       			 OfferToReceiveVideo: true
+   			 };
                 connection.join(document.getElementById('room-id').value);
             };
             var connection = new RTCMultiConnection();
             connection.socketMessageEvent = 'firebase-demo';
             connection.setCustomSocketHandler(FirebaseConnection);
-            connection.firebase = 'webrtc-experiment';
+            connection.firebase = 'what-tv';
             connection.session = {
                 audio: true,
                 video: true,
                 oneway:true
             };
-  /* connection.bandwidth = {
-          audio: 80,  // 50 kbps
-          video: 2200, // 256 kbps
-      };*/
+   connection.bandwidth = {
+          audio: 60,  // 50 kbps
+          video: 1500, // 256 kbps
+      };
             connection.sdpConstraints.mandatory = {
-                OfferToReceiveAudio: true,
-                OfferToReceiveVideo: true
+                OfferToReceiveAudio: false,
+                OfferToReceiveVideo: false
             };
             connection.videosContainer = document.getElementById('videos-container');
             connection.onstream = function(event) {
                 connection.videosContainer.appendChild(event.mediaElement);
-                //event.mediaElement.play();
+                event.mediaElement.play();
+               // event.mediaElement.controls=false;
                 ElVideo=event.mediaElement;
                 setTimeout(function() {
                     event.mediaElement.play();
-                    event.mediaElement.classList.add("video-js");
+                event.mediaElement.classList.add("video-js");
 			event.mediaElement.controls=false;
                     event.mediaElement.classList.add("fullscreen-bg__video");
+                   // document.getElementById("fullscreen").click();
                 }, 1000);
             };
             //connection.onmessage = appendDIV;
@@ -234,10 +250,10 @@
 					  if(snapshot.exists()){
 					  if(snapshot.child("estatus").val()=="Activo"){
 					  		 document.getElementById("estado").innerHTML =snapshot.child("estatus").val();
-					  		 document.getElementById("estado").className = "badge-info";
+					  		// document.getElementById("estado").className = "badge-info";
 							 setTimeout(function(){ document.getElementById("join-room").click(); }, 600);
 					  }else{
-					  	document.getElementById("estado").className = "badge-danger";
+					  	//document.getElementById("estado").className = "badge-danger";
 					  	document.getElementById("estado").innerHTML =snapshot.child("estatus").val();
 					  	//location.reload()
 					  }
@@ -247,8 +263,7 @@
                         console.log(snapshot);
                       if(snapshot.exists()){
                               if(snapshot.val()=="Inactivo"){
-				      console.log("finalizo");
-					location.reload();
+                                   location.reload()
                               }
                       }
                     });
@@ -262,7 +277,7 @@
             if(roomid && roomid.length) {
                 //document.getElementById('room-id').value = roomid;
                 localStorage.setItem(connection.socketMessageEvent, roomid);
-       
+           
             }
         </script>
 </body>
